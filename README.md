@@ -27,5 +27,5 @@ A web-based application that predicts future stock prices using Machine Learning
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-username/stock-predictor.git
-cd stock-predictor
+https://github.com/asileayuba/stock-prediction-portal.git
+cd stock-prediction-portal
