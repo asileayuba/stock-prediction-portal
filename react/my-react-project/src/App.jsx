@@ -5,7 +5,7 @@ import LearnProps from "./components/LearnProps"
 import LearnEvent from "./components/LearnEvent"
 
 function App() {
-  let price = 200
+  // let price = 200
 
   return (
     <>
