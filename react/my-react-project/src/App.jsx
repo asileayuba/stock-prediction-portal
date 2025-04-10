@@ -4,6 +4,7 @@ import LearnJSX from "./components/LearnJSX"
 import LearnProps from "./components/LearnProps"
 
 function App() {
+  let price = 200
 
   return (
     <>
@@ -11,7 +12,7 @@ function App() {
       {/* <HelloWorld /> */}
       {/* <LearnReact /> */}
       {/* <LearnJSX /> */}
-      <LearnProps stock='Tesla'/>
+      <LearnProps stock='Tesla' price={price}/>
     </>
   )
 }
