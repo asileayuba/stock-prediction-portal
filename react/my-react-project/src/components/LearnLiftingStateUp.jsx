@@ -2,7 +2,10 @@
 
 const LearnLiftingStateUp = () => {
   return (
-    <div>LearnLiftingStateUp</div>
+    <>
+        <h1> Liftin State Up </h1>
+        <button onClick={handleClick}> Click Here</button>
+    </>
   )
 }
 
