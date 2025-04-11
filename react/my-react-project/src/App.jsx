@@ -8,6 +8,10 @@ import LearnLiftingStateUp from "./components/LearnLiftingStateUp"
 function App() {
   // let price = 200
 
+  const someStock = (data) => {
+    console.log(data)
+  }
+
   return (
     <>
       <h1>App Component</h1>
@@ -16,7 +20,7 @@ function App() {
       {/* <LearnJSX /> */}
       {/* <LearnProps stock='Tesla' price={price}/> */}
       {/* < LearnEvent /> */}
-      < LearnLiftingStateUp />
+      < LearnLiftingStateUp getStock={someStock}/>
     </>
   )
 }

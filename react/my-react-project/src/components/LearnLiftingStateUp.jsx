@@ -1,9 +1,13 @@
 
 
-const LearnLiftingStateUp = () => {
+const LearnLiftingStateUp = (props) => {
+    const handleClick = () => {
+        let stock = 'Tesla'
+        props.getStock(stock)
+    }
   return (
     <>
-        <h1> Liftin State Up </h1>
+        <h1> Lifting State Up </h1>
         <button onClick={handleClick}> Click Here</button>
     </>
   )
