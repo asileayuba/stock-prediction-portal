@@ -2,7 +2,7 @@
 
 const LearnLiftingStateUp = (props) => {
     const handleClick = () => {
-        let stock = 'Tesla'
+        let stock = 'Apple'
         props.getStock(stock)
     }
   return (
