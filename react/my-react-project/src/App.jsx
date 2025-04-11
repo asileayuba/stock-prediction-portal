@@ -3,6 +3,7 @@ import LearnReact from "./components/LearnReact"
 import LearnJSX from "./components/LearnJSX"
 import LearnProps from "./components/LearnProps"
 import LearnEvent from "./components/LearnEvent"
+import LearnLiftingStateUp from "./components/LearnLiftingStateUp"
 
 function App() {
   // let price = 200
@@ -14,7 +15,8 @@ function App() {
       {/* <LearnReact /> */}
       {/* <LearnJSX /> */}
       {/* <LearnProps stock='Tesla' price={price}/> */}
-      < LearnEvent />
+      {/* < LearnEvent /> */}
+      < LearnLiftingStateUp />
     </>
   )
 }
