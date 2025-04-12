@@ -9,6 +9,7 @@ const LearnUseState = () => {
     }
   return (
     <>
+    <h1>Number: {num}</h1>
     <button onClick={handleNum}> Click Here </button>
     </>
   )
