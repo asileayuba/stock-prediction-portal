@@ -9,9 +9,9 @@ import LearnUseState from "./components/LearnUseState"
 function App() {
   // let price = 200
 
-  const someStock = (data) => {
-    console.log(data)
-  }
+  // const someStock = (data) => {
+  //   console.log(data)
+  // }
 
   return (
     <>
