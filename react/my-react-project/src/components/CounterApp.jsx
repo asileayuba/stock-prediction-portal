@@ -2,6 +2,10 @@ import React from 'react'
 
 const CounterApp = () => {
     const [count, setCount] = useState(0)
+
+    const increaseCount =  () => {
+        setCount(count + 1);
+    }
   return (
     <>
         <h1>CounterApp</h1>
