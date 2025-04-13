@@ -8,7 +8,7 @@ const LearnUseState = () => {
         setNum(10)
     }
 
-    const [stockPrice, setStockPice] = useState({stock: 'Apple', price: 100})
+    const [stockPrice, setStockPrice] = useState({stock: 'Apple', price: 100})
     console.log(stockPrice);
 
     const UpdateStockPrice = () => {

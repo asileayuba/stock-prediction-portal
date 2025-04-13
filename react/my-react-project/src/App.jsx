@@ -5,6 +5,7 @@ import LearnProps from "./components/LearnProps"
 import LearnEvent from "./components/LearnEvent"
 import LearnLiftingStateUp from "./components/LearnLiftingStateUp"
 import LearnUseState from "./components/LearnUseState"
+import CounterApp from "./components/CounterApp"
 
 function App() {
   // let price = 200
@@ -22,7 +23,8 @@ function App() {
       {/* <LearnProps stock='Tesla' price={price}/> */}
       {/* < LearnEvent /> */}
       {/* < LearnLiftingStateUp getStock={someStock}/> */}
-      < LearnUseState />
+      {/* < LearnUseState /> */}
+      < CounterApp />
 
     </>
   )
