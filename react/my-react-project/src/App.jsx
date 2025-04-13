@@ -16,7 +16,7 @@ function App() {
 
   return (
     <>
-      <h1>App Component</h1>
+      {/* <h1>App Component</h1> */}
       {/* <HelloWorld /> */}
       {/* <LearnReact /> */}
       {/* <LearnJSX /> */}
