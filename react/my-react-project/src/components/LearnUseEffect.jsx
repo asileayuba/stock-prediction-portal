@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 
 const LearnUseEffect = () => {
     const [count, setCount] = useState(0)
@@ -10,8 +10,13 @@ const LearnUseEffect = () => {
 
 const generateRandomNum = () =>{
     const randomNum = Math.floor(Math.random() * 100);
-    console.log(randomNum);
+    setRandomNum(randomNum)
 }
+
+useEffect(()=>{
+    // the logic goes
+    console.log('UseEffect is called');
+}, [])
   return (
     <>
         <h1>Count: {count}</h1>
