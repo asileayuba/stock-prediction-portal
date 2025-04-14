@@ -1,8 +1,11 @@
-import React from 'react'
+import {useState} from 'react'
 
 const LearnUseEffect = () => {
+    const [count, setCount] = useState(0)
   return (
-    <div>LearnUseEffect</div>
+    <>
+        <h1>Count: {count}</h1>
+    </>
   )
 }
 
