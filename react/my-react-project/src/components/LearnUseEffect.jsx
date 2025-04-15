@@ -17,7 +17,7 @@ useEffect(()=>{
     // the logic goes
     console.log('UseEffect is called');
 
-    // Cleanup Functions
+    // Clean up Function
     return () =>{
         console.log('Cleanup function is called');
     }
