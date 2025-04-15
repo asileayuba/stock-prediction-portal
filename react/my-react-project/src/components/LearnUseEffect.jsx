@@ -21,7 +21,7 @@ useEffect(()=>{
     return () =>{
         console.log('Cleanup function is called');
     }
-}, [])
+}, [count])
   return (
     <>
         <h1>Count: {count}</h1>
