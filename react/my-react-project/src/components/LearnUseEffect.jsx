@@ -16,6 +16,11 @@ const generateRandomNum = () =>{
 useEffect(()=>{
     // the logic goes
     console.log('UseEffect is called');
+
+    // Cleanup Functions
+    return () =>{
+        console.log('Cleanup function is called');
+    }
 }, [])
   return (
     <>
