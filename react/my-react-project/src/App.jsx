@@ -12,6 +12,7 @@ import ChildA from "./components/ChildA"
 
 function App() {
   // let price = 200
+  let stock = 'Tesla'
 
   // const someStock = (data) => {
   //   console.log(data)
@@ -30,7 +31,7 @@ function App() {
       {/* < CounterApp /> */}
       {/* < LearnUseEffect /> */}
       {/* < LearnuseMemo /> */}
-      < ChildA />
+      < ChildA stock={stock} />
     </>
   )
 }
