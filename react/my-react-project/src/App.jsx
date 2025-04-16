@@ -8,6 +8,7 @@ import LearnUseState from "./components/LearnUseState"
 import CounterApp from "./components/CounterApp"
 import LearnUseEffect from "./components/LearnUseEffect"
 import LearnuseMemo from "./components/LearnuseMemo"
+import ChildA from "./components/ChildA"
 
 function App() {
   // let price = 200
@@ -28,7 +29,8 @@ function App() {
       {/* < LearnUseState /> */}
       {/* < CounterApp /> */}
       {/* < LearnUseEffect /> */}
-      < LearnuseMemo />
+      {/* < LearnuseMemo /> */}
+      < ChildA />
     </>
   )
 }
