@@ -1,11 +1,11 @@
 import React from 'react'
 import ChildC from './ChildC'
 
-const ChildB = () => {
+const ChildB = (props) => {
   return (
     <>
         <div>ChildB</div>
-        < ChildC />
+        < ChildC stock={props.stock} />
     </>
   )
 }
