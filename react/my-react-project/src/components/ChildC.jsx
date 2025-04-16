@@ -1,8 +1,8 @@
 import React from 'react'
 
-const ChildC = () => {
+const ChildC = (props) => {
   return (
-    <div>ChildC</div>
+    <div>ChildC - {props.stock}</div>
   )
 }
 
