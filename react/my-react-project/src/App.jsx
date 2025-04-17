@@ -36,11 +36,13 @@ function App() {
       {/* < CounterApp /> */}
       {/* < LearnUseEffect /> */}
       {/* < LearnuseMemo /> */}
-      <StockContext.Provider>
+      <StockContext.Provider value={stock}>
         < ChildA />
-      <StockContext.Provider/>
+      </StockContext.Provider>
     </>
   )
 }
 
 export default App
+
+export {StockContext}
