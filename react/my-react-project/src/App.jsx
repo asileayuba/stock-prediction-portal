@@ -36,7 +36,9 @@ function App() {
       {/* < CounterApp /> */}
       {/* < LearnUseEffect /> */}
       {/* < LearnuseMemo /> */}
-      < ChildA />
+      <StockContext.Provider>
+        < ChildA />
+      <StockContext.Provider/>
     </>
   )
 }
