@@ -9,6 +9,9 @@ import CounterApp from "./components/CounterApp"
 import LearnUseEffect from "./components/LearnUseEffect"
 import LearnuseMemo from "./components/LearnuseMemo"
 import ChildA from "./components/ChildA"
+import { createContext } from "react"
+
+const StockContext = createContext
 
 function App() {
   // let price = 200
@@ -18,7 +21,7 @@ function App() {
   //   console.log(data)
   // }
 
-  // Create Provider and Consumer
+  // Create, Provider and Consumer
 
   return (
     <>
@@ -33,7 +36,7 @@ function App() {
       {/* < CounterApp /> */}
       {/* < LearnUseEffect /> */}
       {/* < LearnuseMemo /> */}
-      < ChildA stock={stock} />
+      < ChildA />
     </>
   )
 }
