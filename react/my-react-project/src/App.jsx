@@ -9,17 +9,19 @@ import CounterApp from "./components/CounterApp"
 import LearnUseEffect from "./components/LearnUseEffect"
 import LearnuseMemo from "./components/LearnuseMemo"
 import ChildA from "./components/ChildA"
-import { createContext } from "react"
+import { createContext, useState } from "react"
 
-const StockContext = createContext
+const StockContext = createContext();
+const UserContext =createContext();
 
 function App() {
-  // let price = 200
+  let price = 200
   let stock = 'Tesla'
+  const [user, setuser] = useState({name: 'Asile', isLoggedIn: 'Yes'});
 
-  // const someStock = (data) => {
-  //   console.log(data)
-  // }
+  const someStock = (data) => {
+    console.log(data)
+  }
 
   // Create, Provider and Consumer
 
@@ -36,8 +38,10 @@ function App() {
       {/* < CounterApp /> */}
       {/* < LearnUseEffect /> */}
       {/* < LearnuseMemo /> */}
-      <StockContext.Provider value={stock}>
-        < ChildA />
+      <StockContext.Provider value={{stock, price}}>
+        <UserContext.Provider value={{user, setuser}}>
+          < ChildA />
+        </UserContext.Provider>
       </StockContext.Provider>
     </>
   )
@@ -45,4 +49,4 @@ function App() {
 
 export default App
 
-export {StockContext}
+export {StockContext, UserContext}
