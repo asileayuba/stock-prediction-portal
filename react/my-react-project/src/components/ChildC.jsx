@@ -3,6 +3,7 @@ import { StockContext, UserContext } from '../App'
 
 const ChildC = () => {
     const stockData = useContext(StockContext)
+    const userData =useContext(UserContext)
   return (
     <>
         {/* <StockContext.Consumer>
@@ -27,6 +28,7 @@ const ChildC = () => {
             }
         </StockContext.Consumer> */}
 
+        <h2>User: {userData.user.name}</h2>
         <h2>ChildC - {stockData.stock}</h2>
     </>
   )
