@@ -17,13 +17,13 @@ const StockContext = createContext();
 const UserContext =createContext();
 
 function App() {
-  let price = 200
-  let stock = 'Apple'
-  const [user, setuser] = useState({name: 'Asile', isLoggedIn: 'Yes'});
+//   let price = 200
+//   let stock = 'Apple'
+//   const [user, setuser] = useState({name: 'Asile', isLoggedIn: 'Yes'});
 
-  const someStock = (data) => {
-    console.log(data)
-  }
+//   const someStock = (data) => {
+//     console.log(data)
+//   }
 
   // Create, Provider and Consumer
 
