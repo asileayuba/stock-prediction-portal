@@ -10,13 +10,15 @@ import LearnUseEffect from "./components/LearnUseEffect"
 import LearnuseMemo from "./components/LearnuseMemo"
 import ChildA from "./components/ChildA"
 import { createContext, useState } from "react"
+import LearnUseRef from "./components/LearnUseRef"
+
 
 const StockContext = createContext();
 const UserContext =createContext();
 
 function App() {
   let price = 200
-  let stock = 'Tesla'
+  let stock = 'Apple'
   const [user, setuser] = useState({name: 'Asile', isLoggedIn: 'Yes'});
 
   const someStock = (data) => {
@@ -38,11 +40,14 @@ function App() {
       {/* < CounterApp /> */}
       {/* < LearnUseEffect /> */}
       {/* < LearnuseMemo /> */}
-      <StockContext.Provider value={{stock, price}}>
+      {/* <StockContext.Provider value={{stock, price}}>
         <UserContext.Provider value={{user, setuser}}>
           < ChildA />
         </UserContext.Provider>
-      </StockContext.Provider>
+      </StockContext.Provider> */}
+
+      < LearnUseRef/>
+
     </>
   )
 }
