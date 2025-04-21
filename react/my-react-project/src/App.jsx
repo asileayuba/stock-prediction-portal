@@ -11,6 +11,7 @@ import LearnuseMemo from "./components/LearnuseMemo"
 import ChildA from "./components/ChildA"
 import { createContext, useState } from "react"
 import LearnUseRef from "./components/LearnUseRef"
+import LearnCustomHooks from "./components/LearnCustomHooks"
 
 
 const StockContext = createContext();
@@ -47,6 +48,7 @@ function App() {
       </StockContext.Provider> */}
 
       < LearnUseRef/>
+      <LearnCustomHooks/>
 
     </>
   )
