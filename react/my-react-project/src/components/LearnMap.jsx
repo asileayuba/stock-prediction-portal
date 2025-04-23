@@ -5,10 +5,12 @@ const LearnMap = () => {
   return (
     <>
     
-        <h1>Map Function</h1>
-        <ul>
-            {}
-        </ul>
+    <h1>Map Function</h1>
+    <ul>
+        {names.map((name, index)=>(
+            <li key={index}>{name}</li>
+        ))}
+    </ul>
 
     </>
   )

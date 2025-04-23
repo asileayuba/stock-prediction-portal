@@ -13,6 +13,7 @@ import { createContext, useState } from "react"
 import LearnUseRef from "./components/LearnUseRef"
 import LearnCustomHooks from "./components/LearnCustomHooks"
 import LearnConditionalRendering from "./components/LearnConditionalRendering"
+import LearnMap from "./components/LearnMap"
 
 
 const StockContext = createContext();
