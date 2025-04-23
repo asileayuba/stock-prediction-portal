@@ -12,6 +12,7 @@ import ChildA from "./components/ChildA"
 import { createContext, useState } from "react"
 import LearnUseRef from "./components/LearnUseRef"
 import LearnCustomHooks from "./components/LearnCustomHooks"
+import LearnConditionalRendering from "./components/LearnConditionalRendering"
 
 
 const StockContext = createContext();
@@ -49,6 +50,7 @@ function App() {
 
       {/* < LearnUseRef/> */}
       {/* <LearnCustomHooks/> */}
+      < LearnConditionalRendering />
 
     </>
   )
