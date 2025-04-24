@@ -17,9 +17,9 @@ const LearnInlineCss = () => {
             <style>
                 {`
                     .container{
-                        background-color: #00ff00
-                        height: 100px
-                        width: 100px
+                        background-color: #00ff00;
+                        height: 100px;
+                        width: 100px;
                     }
                 `}
             </style>
@@ -36,6 +36,8 @@ const LearnInlineCss = () => {
         <div className='container'>
 
         </div>
+        <hr />
+        <h1>External CSS</h1>
     </>
   )
 }
