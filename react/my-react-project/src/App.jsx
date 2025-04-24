@@ -14,6 +14,7 @@ import LearnUseRef from "./components/LearnUseRef"
 import LearnCustomHooks from "./components/LearnCustomHooks"
 import LearnConditionalRendering from "./components/LearnConditionalRendering"
 import LearnMap from "./components/LearnMap"
+import LearnInlineCss from "./components/LearnInlineCss"
 
 
 const StockContext = createContext();
@@ -52,7 +53,8 @@ function App() {
       {/* < LearnUseRef/> */}
       {/* <LearnCustomHooks/> */}
       {/* < LearnConditionalRendering /> */}
-      < LearnMap />
+      {/* < LearnMap /> */}
+      < LearnInlineCss />
 
     </>
   )
