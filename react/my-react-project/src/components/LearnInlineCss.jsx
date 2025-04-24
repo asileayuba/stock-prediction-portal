@@ -38,6 +38,10 @@ const LearnInlineCss = () => {
         </div>
         <hr />
         <h1>External CSS</h1>
+        <div className='yellowbox'>
+
+        </div>
+        <h2 className='yellowtext'>Yellow Text</h2>
     </>
   )
 }
