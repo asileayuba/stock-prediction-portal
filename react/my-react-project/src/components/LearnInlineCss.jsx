@@ -9,6 +9,7 @@ const LearnInlineCss = () => {
         },
         h2Text: {
             fontSize: '40px'
+            color: '#00ff000'
         }
     }
   return (
