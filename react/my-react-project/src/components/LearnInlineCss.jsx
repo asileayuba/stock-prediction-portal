@@ -2,7 +2,9 @@ import React from 'react'
 
 const LearnInlineCss = () => {
   return (
-    <div>LearnInlineCss</div>
+    <>
+        <p style={ fontSize: '20px' }>Hello, this is a paragraph</p>
+    </>
   )
 }
 
