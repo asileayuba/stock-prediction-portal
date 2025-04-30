@@ -9,9 +9,9 @@ const Header = () => {
             <Link className='navbar-brand text-light' to="/">Stock Prediction Portal</Link>
 
             <div>
-                < Button text="Login" class="btn btn-outline-info" />
+                < Button text="Login" class="btn btn-outline-info" url="/login" />
                 &nbsp;
-                < Button text="Register" class="btn-info" />
+                < Button text="Register" class="btn-info" url="/register" />
             </div>
         </nav>
     </>
