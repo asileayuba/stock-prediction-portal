@@ -4,6 +4,7 @@ import Header from './components/Header'
 import Main from './components/main'
 import Footer from './components/footer'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Register from './components/Register'
 
 
 function App() {
@@ -12,9 +13,12 @@ function App() {
     <>
 
       < BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Main/>} />
-        </Routes>
+        < Header />
+          <Routes>
+            <Route path='/' element={<Main/>} />
+            <Route path='/register' element={<Register/>} />
+          </Routes>
+        < Footer/>  
       </BrowserRouter>
 
     </>
