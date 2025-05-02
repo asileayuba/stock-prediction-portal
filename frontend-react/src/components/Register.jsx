@@ -5,6 +5,7 @@ const Register = () => {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [errors, setErrors] = useState({})
 
     const handleRegistration = async (e) =>{
         e.preventDefault();
@@ -18,6 +19,7 @@ const Register = () => {
             console.log('response.data==>', response.data)
             console.log('Registration successful');
         }catch(error){
+            setErrors(error.response.data)
             console.error('Registration error: ', error.response.data)
         }
     }
@@ -29,9 +31,18 @@ const Register = () => {
                     <h3 className='text-light text-center mb-4'> Register for an Account </h3>
 
                     <form onSubmit={handleRegistration}>
-                        <input type="text" className='form-control mb-3' placeholder='Enter your username' value={username} onChange={(e) => setUsername(e.target.value)} />
-                        <input type="email" className='form-control mb-3' placeholder='Enter your email address' value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <input type="password" className='form-control mb-5' placeholder='Create a secure password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <div className="mb-3">
+                            <input type="text" className='form-control' placeholder='Enter your username' value={username} onChange={(e) => setUsername(e.target.value)} />
+                            <small>{errors.username && <div className='text-danger'>{errors.username}</div>}</small>
+                        </div>
+                        <div className="mb-3">
+                            <input type="email" className='form-control' placeholder='Enter your email address' value={email} onChange={(e) => setEmail(e.target.value)} />
+                        </div>
+                        <div className="mb-5">
+                            <input type="password" className='form-control' placeholder='Create a secure password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <small>{errors.password && <div className='text-danger'>{errors.password}</div>}</small>
+                        </div>
+                        
                         <button type='submit' className='btn btn-info d-block mx-auto' >Create Account</button>
                     </form>
                 </div>
