@@ -6,6 +6,7 @@ const Register = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errors, setErrors] = useState({})
+    const [success, setSuccess] = useState(false)
 
     const handleRegistration = async (e) =>{
         e.preventDefault();
@@ -19,6 +20,7 @@ const Register = () => {
             console.log('response.data==>', response.data)
             console.log('Registration successful');
             setErrors({})
+            setSuccess(true)
         }catch(error){
             setErrors(error.response.data)
             console.error('Registration error: ', error.response.data)
@@ -39,11 +41,11 @@ const Register = () => {
                         <div className="mb-3">
                             <input type="email" className='form-control' placeholder='Enter your email address' value={email} onChange={(e) => setEmail(e.target.value)} />
                         </div>
-                        <div className="mb-5">
+                        <div className="mb-3">
                             <input type="password" className='form-control' placeholder='Create a secure password' value={password} onChange={(e) => setPassword(e.target.value)} />
                             <small>{errors.password && <div className='text-danger'>{errors.password}</div>}</small>
                         </div>
-                        
+                        {success && <div className='alert alert-success'>Registration Successful</div>}
                         <button type='submit' className='btn btn-info d-block mx-auto' >Create Account</button>
                     </form>
                 </div>
