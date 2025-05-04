@@ -1,9 +1,19 @@
 import React, { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const userData = {username, password}
+    console.log('userData==>', userData);
+  }
+
   return (
         <>
             <div className='container'>
@@ -11,13 +21,12 @@ const Login = () => {
                     <div className="col-md-6 bg-light-dark p-5 rounded">
                         <h3 className='text-light text-center mb-4'> Login Into Your Account </h3>
     
-                        <form>
+                        <form onSubmit={handleLogin}>
                             <div className="mb-3">
                                 <input type="text" className='form-control' placeholder='Enter your username' value={username} onChange={(e) => setUsername(e.target.value)} />
                             </div> 
                             <div className="mb-3">
                                 <input type="password" className='form-control' placeholder='Create a secure password' value={password} onChange={(e) => setPassword(e.target.value)} />
-            
                             </div>
                             
                             {loading ? (
