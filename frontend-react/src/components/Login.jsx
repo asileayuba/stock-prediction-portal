@@ -9,6 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const [error, setError] = useState('')
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,6 +26,7 @@ const Login = () => {
       navigate('/')
     }catch(error){
       console.error('invalid credentials')
+      setError('Invalid credentials')
     }finally{
       setLoading(false)
     }
@@ -44,6 +46,8 @@ const Login = () => {
                             <div className="mb-3">
                                 <input type="password" className='form-control' placeholder='Create a secure password' value={password} onChange={(e) => setPassword(e.target.value)} />
                             </div>
+
+                            {error && <div className='text-danger'>{error}</div>}
                             
                             {loading ? (
                                 <button type='submit' className='btn btn-info d-block mx-auto' disabled > < FontAwesomeIcon icon={faSpinner} spin /> Logging in... </button>
