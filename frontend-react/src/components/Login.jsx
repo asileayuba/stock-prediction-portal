@@ -18,13 +18,16 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
 
-    const userData = {username, password}
-    console.log('userData==>', userData);
-
+    const authData = {
+      username, password
+    }
+    console.log('userData==>', authData);
+    // Send API request to backend
     try{
-      const response = await axios.post('http://127.0.0.1:8000/api/v1/token/', userData)
-      localStorage.setItem('accessToken', response.data.access)
-      localStorage.setItem('refreshToken', response.data.refresh)
+      const response = await axios.post('http://127.0.0.1:8000/api/v1/token/', authData)
+      localStorage.setItem('access_token', response.data.access)
+      localStorage.setItem('refresh_token', response.data.refresh)
+
       console.log('Login successful');
       setIsLoggedIn(true)
       navigate('/')
