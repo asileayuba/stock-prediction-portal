@@ -6,7 +6,6 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchProtectedData = async () => {
             const accessToken = localStorage.getItem('access_token');
-            console.log('Access Token:', accessToken);
 
             try {
                 const response = await axiosInstance.get('/protected-view', {
@@ -29,7 +28,9 @@ const Dashboard = () => {
     }, [])
 
     return (
-        <div className='text-light container'>Dashboard</div>
+        <>
+        {/* <div className='text-light container'>Dashboard</div> */}
+        </> 
     )
 }
 
