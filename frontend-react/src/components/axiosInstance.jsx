@@ -5,5 +5,11 @@ const axiosInstance = axios.create({
     baseURL: baseURL,
 })
 
+// Request Interceptor
+axiosInstance.interceptors.request.use(
+    function(config){
+        return config;
+    }
+)
 
 export default axiosInstance
