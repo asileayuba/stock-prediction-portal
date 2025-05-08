@@ -9,9 +9,9 @@ const Dashboard = () => {
 
             try {
                 const response = await axiosInstance.get('/protected-view', {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
+                    // headers: {
+                    //     Authorization: `Bearer ${accessToken}`
+                    // }
                 })
                 console.log('Success:', response.data);
             } catch (error) {
