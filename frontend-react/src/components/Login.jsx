@@ -4,6 +4,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../AuthProvider'
+import axiosInstance from './axiosInstance'
 
 
 const Login = () => {
@@ -24,7 +25,7 @@ const Login = () => {
     console.log('userData==>', authData);
     // Send API request to backend
     try{
-      const response = await axios.post('http://127.0.0.1:8000/api/v1/token/', authData)
+      const response = await axiosInstance.post('/token/', authData)
       localStorage.setItem('access_token', response.data.access)
       localStorage.setItem('refresh_token', response.data.refresh)
 
