@@ -32,7 +32,7 @@ const Login = () => {
       setIsLoggedIn(true);
 
       // Redirect to the homepage or dashboard
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       console.error('Invalid credentials');
       setError('Invalid credentials');
