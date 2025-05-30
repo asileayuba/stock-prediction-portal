@@ -26,4 +26,15 @@ class StockPredictionAPIView(APIView):
             if df.empty:
                 return Response({"error": "No data found for the given ticker.",
                                  "status": status.HTTP_404_NOT_FOUND})
+            df = df.reset_index()
+            # Generate Basic Plot
+            plt.switch_backend("AGG")
+            plt.figure(figsize=(12, 5))
+            plt.plot(df.Close, label="Closing Price")
+            plt.title(f"Closing price of {ticker}")
+            plt.xlabel("Days")
+            plt.ylabel("Close price")
+            plt.legend()
+            
+            
             return Response({'status': 'success', 'ticker': ticker})
