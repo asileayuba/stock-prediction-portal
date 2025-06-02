@@ -8,6 +8,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime
+import os
+from django.conf import settings
 
 
 
@@ -35,6 +37,14 @@ class StockPredictionAPIView(APIView):
             plt.xlabel("Days")
             plt.ylabel("Close price")
             plt.legend()
+            # Save the plot to a file
+            plot_img_path = f"{ticker}_plot.png"
+            image_path = os.path.join(settings.MEDIA_ROOT, plot_img_path)
+            plt.savefig(image_path)
+            plt.close()
+            plot_img = settings.MEDIA_URL + plot_img_path
+            print(plot_img)
             
-            
-            return Response({'status': 'success', 'ticker': ticker})
+            return Response({'status': 'success', 
+                             'plot_img': plot_img,
+                             })
