@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import os
 from django.conf import settings
+from .utils import save_plot
 
 
 
@@ -39,12 +40,22 @@ class StockPredictionAPIView(APIView):
             plt.legend()
             # Save the plot to a file
             plot_img_path = f"{ticker}_plot.png"
-            image_path = os.path.join(settings.MEDIA_ROOT, plot_img_path)
-            plt.savefig(image_path)
-            plt.close()
-            plot_img = settings.MEDIA_URL + plot_img_path
-            print(plot_img)
+            plot_img = save_plot(plot_img_path)
+            
+            # 100 Days moving average
+            ma100 = df.Close.rolling(100).mean()
+            plt.switch_backend('AGG')
+            plt.figure(figsize=(12, 5))
+            plt.plot(df.Close, label="Closing Price")
+            plt.plot(ma100, 'r', label='100 DMA')
+            plt.title(f"Closing price of {ticker}")
+            plt.xlabel("Days")
+            plt.ylabel("Close price")
+            plt.legend()
+            plot_img_path = f"{ticker}_100_dma.png"
+            plot_100_dma = save_plot(plot_img_path)
             
             return Response({'status': 'success', 
                              'plot_img': plot_img,
+                             'plot_100_dma': plot_100_dma,
                              })
