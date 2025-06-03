@@ -60,7 +60,7 @@ const Login = () => {
               <input
                 type="password"
                 className="form-control"
-                placeholder="Create a secure password"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

@@ -7,6 +7,14 @@ const Dashboard = () => {
     const [ticker, setTicker] = useState("")
     const [error, setError] = useState()
     const [loading, setLoading] = useState(false)
+    const [plot, setPlot] = useState()
+    const [ma100, setMA100] = useState()
+    const [ma200, setMA200] = useState()
+    const [prediction, setPrediction] = useState()
+    const [zoomedPrediction, setZoomedPrediction] = useState()
+    const [mse, setMSE] = useState()
+    const [rmse, setRMSE] = useState()
+    const [r2, setR2] = useState()
 
     useEffect(() => {
         const fetchProtectedData = async () => {
@@ -33,6 +41,21 @@ const Dashboard = () => {
                 ticker: ticker
             });
             console.log(response.data);
+            const backendRoot = import.meta.env.VITE_BACKEND_ROOT
+            const plotUrl = `${backendRoot}${response.data.plot_img}`
+            const ma100Url = `${backendRoot}${response.data.plot_100_dma}`
+            const ma200Url = `${backendRoot}${response.data.plot_200_dma}`
+            const predictionUrl = `${backendRoot}${response.data.plot_prediction}`
+            const zoomedPredictionUrl = `${backendRoot}${response.data.plot_zoomed_prediction}`
+            setPlot(plotUrl)
+            setMA100(ma100Url)
+            setMA200(ma200Url)
+            setPrediction(predictionUrl)
+            setZoomedPrediction(zoomedPredictionUrl)
+            setMSE(response.data.mse)
+            setRMSE(response.data.rmse)
+            setR2(response.data.r2)
+            // set plots
             if(response.data.error){
                 setError(response.data.error)
             }
@@ -58,6 +81,50 @@ const Dashboard = () => {
                         </button>
                     </form>
                 </div>
+
+                {/* Print prediction plots */}
+                {prediction && (
+                    <div className="prediction mt-5">
+                    <div className="p-3">
+                        {plot && (
+                            <img src={plot} alt='Chart' style={{ maxWidth: '100%'}} />
+                        )}
+                    </div>
+
+                    <div className="p-3">
+                        {ma100 && (
+                            <img src={ma100} alt="100 DMA Plot" style={{ maxWidth: '100%'}} />
+                        )}
+                    </div>
+
+                    <div className="p-3">
+                        {ma200 && (
+                            <img src={ma200} alt="200 DMA Plot" style={{ maxWidth: '100%'}} />
+                        )}
+                    </div>
+
+                    <div className="p-3">
+                        {prediction && (
+                            <img src={prediction} alt="200 DMA Plot" style={{ maxWidth: '100%'}} />
+                        )}
+                    </div>
+
+                    <div className="p-3">
+                        {zoomedPrediction && (
+                            <img src={zoomedPrediction} alt="200 DMA Plot" style={{ maxWidth: '100%'}} />
+                        )}
+                    </div>
+
+                    <div className="text-light p-3">
+                        <h4>Model Evaluation</h4>
+                        <p>Mean Squared Error (MSE): {mse}</p>
+                        <p>Root Mean Squared Error (RMSE): {rmse}</p>
+                        <p>R-Squared Error: {r2}</p>
+                    </div>
+                </div>
+                )}
+                
+                
             </div>
         </div>
         </> 
