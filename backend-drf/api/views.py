@@ -1,154 +1,107 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import StockPredictionSerializer
-from rest_framework import status
 from rest_framework.response import Response
-import yfinance as yf
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from datetime import datetime
-import os
-from django.conf import settings
-from .utils import save_plot
-from sklearn.preprocessing import MinMaxScaler
-from keras.models import load_model
-from sklearn.metrics import mean_squared_error, r2_score
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import UserRateThrottle
+
+from .serializers import StockPredictionSerializer
+from .services.prediction_service import run_prediction
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+class PredictionThrottle(UserRateThrottle):
+    """Allow max 10 predictions per user per minute (computationally expensive)."""
+    rate = "10/min"
 
 
 class StockPredictionAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [PredictionThrottle]
+
     def post(self, request):
         serializer = StockPredictionSerializer(data=request.data)
-        if serializer.is_valid():
-            ticker = serializer.validated_data['ticker']
-            
-            # Fetch the data from yfinance
-            now = datetime.now()
-            start = datetime(now.year-10, now.month, now.day)
-            end = now
-            df = yf.download(ticker, start, end)
-            print(df)
-            if df.empty:
-                return Response({"error": "No data found for the given ticker.",
-                                 "status": status.HTTP_404_NOT_FOUND})
-            df = df.reset_index()
-            # Generate Basic Plot
-            plt.switch_backend("AGG")
-            plt.figure(figsize=(12, 5))
-            plt.plot(df.Close, label="Closing Price")
-            plt.title(f"Closing price of {ticker}")
-            plt.xlabel("Days")
-            plt.ylabel("Price")
-            plt.legend()
-            # Save the plot to a file
-            plot_img_path = f"{ticker}_plot.png"
-            plot_img = save_plot(plot_img_path)
-            
-            # 100 Days moving average
-            ma100 = df.Close.rolling(100).mean()
-            plt.switch_backend('AGG')
-            plt.figure(figsize=(12, 5))
-            plt.plot(df.Close, label="Closing Price")
-            plt.plot(ma100, 'r', label='100 DMA')
-            plt.title(f"100 Days Moving Average of {ticker}")
-            plt.xlabel("Days")
-            plt.ylabel("Price")
-            plt.legend()
-            plot_img_path = f"{ticker}_100_dma.png"
-            plot_100_dma = save_plot(plot_img_path)
-            
-            # 200 Days moving average
-            ma200 = df.Close.rolling(200).mean()
-            plt.switch_backend('AGG')
-            plt.figure(figsize=(12, 5))
-            plt.plot(df.Close, label="Closing Price")
-            plt.plot(ma100, 'r', label='100 DMA')
-            plt.plot(ma200, 'g', label='200 DMA')
-            plt.title(f"200 Days Moving Average of {ticker}")
-            plt.xlabel("Days")
-            plt.ylabel("Price")
-            plt.legend()
-            plot_img_path = f"{ticker}_200_dma.png"
-            plot_200_dma = save_plot(plot_img_path)
-            
-            
-            # splitting data in Training and Testing dataset
-            data_training = pd.DataFrame(df.Close[0:int(len(df)*0.7)])
-            data_testing = pd.DataFrame(df.Close[int(len(df)*0.7): int(len(df))])
-            
-            # Scaling down the data between 0 and 1
-            scaler = MinMaxScaler(feature_range=(0,1))
-            
-            # Load ML Model
-            model = load_model('stock_prediction_model.keras')
-            
-            # Preparing Test Data
-            past_100_days = data_training.tail(100)
-            final_df = pd.concat([past_100_days, data_testing], ignore_index=True)
-            input_data = scaler.fit_transform(final_df)
-            
-            x_test = []
-            y_test = []
+        if not serializer.is_valid():
+            return Response(
+                {"error": {"code": "VALIDATION_ERROR", "message": serializer.errors}},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-            for i in range(100, input_data.shape[0]):
-                x_test.append(input_data[i-100: i])
-                y_test.append(input_data[i, 0])
-            x_test, y_test = np.array(x_test), np.array(y_test)
+        ticker = serializer.validated_data["ticker"]
+
+        try:
+            result = run_prediction(ticker)
             
-            # Making Predictions
-            y_predicted = model.predict(x_test)
+            # Log the search history
+            from .models import SearchHistory
+            SearchHistory.objects.create(user=request.user, ticker=ticker, prediction_data=result)
             
-            # Revert the scaled prices to original price
-            y_predicted = scaler.inverse_transform(y_predicted.reshape(-1, 1)).flatten()
-            y_test = scaler.inverse_transform(y_test.reshape(-1, 1)).flatten()
+            # Eviction policy: Keep only the 10 most recent searches per user
+            user_searches = SearchHistory.objects.filter(user=request.user).order_by('-searched_at')
+            if user_searches.count() > 10:
+                # Get the IDs of the 10 most recent to keep
+                ids_to_keep = list(user_searches.values_list('id', flat=True)[:10])
+                # Delete the rest
+                SearchHistory.objects.filter(user=request.user).exclude(id__in=ids_to_keep).delete()
+
+            return Response(result, status=status.HTTP_200_OK)
+
+        except ValueError as exc:
+            logger.warning("Prediction validation error for '%s': %s", ticker, exc)
+            return Response(
+                {
+                    "error": {
+                        "code": "INVALID_SYMBOL",
+                        "message": str(exc) or "We couldn't find market data for this stock. Please check the ticker symbol and try again.",
+                    }
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        except FileNotFoundError as exc:
+            logger.error("ML model not found: %s", exc)
+            return Response(
+                {
+                    "error": {
+                        "code": "MODEL_UNAVAILABLE",
+                        "message": "The prediction model is temporarily unavailable. Please try again later.",
+                    }
+                },
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+
+        except Exception as exc:
+            logger.exception("Unexpected prediction error for '%s': %s", ticker, exc)
+            return Response(
+                {
+                    "error": {
+                        "code": "PREDICTION_FAILED",
+                        "message": "We couldn't generate a prediction right now. Please try again.",
+                    }
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+class SearchHistoryDetailAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        from .models import SearchHistory
+        
+        try:
+            history = SearchHistory.objects.get(pk=pk, user=request.user)
+        except SearchHistory.DoesNotExist:
+            return Response(
+                {"error": "This prediction snapshot could not be found or has expired."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        if not history.prediction_data:
+            return Response(
+                {"error": "This history item does not have snapshot data. Please run a new prediction."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
             
-            # print('y_prediction=>', y_predicted)
-            # print('y_test=>', y_test)
-            
-            # Plot the final prediction
-            plt.switch_backend('AGG')
-            plt.figure(figsize=(12, 5))
-            plt.plot(y_test, 'b', label="Original Price")
-            plt.plot(y_predicted, 'r', label='Predicted Price')
-            plt.title(f"Final Prediction for {ticker}")
-            plt.xlabel("Days")
-            plt.ylabel("Price")
-            plt.legend()
-            plot_img_path = f"{ticker}_final_prediction.png"
-            plot_prediction = save_plot(plot_img_path)
-            
-            # Zoomed Plot of the Final Prediction
-            plt.switch_backend('AGG')
-            plt.figure(figsize=(12, 6))
-            plt.plot(y_test, 'b', label='Original Price')
-            plt.plot(y_predicted, 'r', label='Predicted Price')
-            plt.title(f"Zoomed Final Prediction for {ticker}")
-            plt.xlabel('Days')
-            plt.ylabel('Price')
-            plt.legend()
-            plt.xlim(450, 750)
-            plt.ylim(140,220)
-            plot_img_path = f"{ticker}_zoomed_final_prediction.png"
-            plot_zoomed_prediction = save_plot(plot_img_path)
-            
-            # Model Evaluation 
-            # Mean Squared Error (MSE)
-            mse = mean_squared_error(y_test, y_predicted)
-            
-            # Root Mean Squared Error (MSE)
-            rmse = np.sqrt(mse)
-            
-            # R-Squared 
-            r2 = r2_score(y_test, y_predicted)
-            
-            
-            return Response({'status': 'success', 
-                             'plot_img': plot_img,
-                             'plot_100_dma': plot_100_dma,
-                             'plot_200_dma': plot_200_dma,
-                             'plot_prediction': plot_prediction,
-                             'plot_zoomed_prediction': plot_zoomed_prediction,
-                             'mse': mse,
-                             'rmse': rmse,
-                             'r2': r2,
-                             })
+        return Response(history.prediction_data, status=status.HTTP_200_OK)

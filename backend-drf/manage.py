@@ -9,6 +9,17 @@ def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'stock_prediction_main.settings')
     try:
         from django.core.management import execute_from_command_line
+        
+        # Hook into autoreload to watch the .env file
+        from django.utils.autoreload import autoreload_started
+        from pathlib import Path
+        
+        def watch_env_file(sender, **kwargs):
+            env_path = Path(__file__).resolve().parent
+            sender.watch_dir(env_path, '**/.env')
+            
+        autoreload_started.connect(watch_env_file)
+        
     except ImportError as exc:
         raise ImportError(
             "Couldn't import Django. Are you sure it's installed and "

@@ -1,11 +1,7 @@
-import { useContext } from "react";
-import { AuthContext } from "./AuthProvider";
-import { Navigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
+import { useAuth } from './features/auth/AuthProvider';
 
-const PublicRoute = ({ children }) => {
-  const { isLoggedIn } = useContext(AuthContext);
-
-  return !isLoggedIn ? children : <Navigate to="/dashboard" />;
-};
-
-export default PublicRoute;
+export default function PublicRoute({ children }) {
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? <Navigate to="/dashboard" replace /> : children;
+}
